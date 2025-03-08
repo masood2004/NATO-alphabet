@@ -32,6 +32,18 @@ def get_phonetic_spelling(word):
     return phonetic_spelling
 
 
+def validate_input(word):
+    """
+    Validates user input.
+    Raises ValueError if input is empty or contains numbers.
+    """
+    if not word:
+        raise ValueError("Input cannot be empty")
+    if any(char.isdigit() for char in word):
+        raise ValueError("Numbers are not allowed")
+    return True
+
+
 def main():
     """
     Main function that handles user interaction, providing an option to enter words and displaying their phonetic spelling.
@@ -41,20 +53,26 @@ def main():
     print("Type 'exit' to quit the program.")
 
     while True:
-        # Get user input
-        word = input("\nEnter a word or phrase: ")
+        try:
+            # Get and clean input
+            word = input("\nEnter a word or phrase: ").strip()
 
-        # Check if the user wants to exit
-        if word.lower() == 'exit':
-            print("Goodbye!")
-            break
+            # Exit condition check
+            if word.lower() == 'exit':
+                print("Goodbye!")
+                break
 
-        # Get the phonetic spelling of the word
-        phonetic_spelling = get_phonetic_spelling(word)
+            # Validate input
+            validate_input(word)
 
-        # Display the result
-        print("\nPhonetic Spelling:")
-        print(" ".join(phonetic_spelling))
+            # Process valid input
+            phonetic_spelling = get_phonetic_spelling(word)
+            print("\nPhonetic Spelling:")
+            print(" ".join(phonetic_spelling))
+
+        except ValueError as e:
+            print(f"Invalid input: {e}")
+            print("Please try again.")
 
 
 if __name__ == "__main__":
